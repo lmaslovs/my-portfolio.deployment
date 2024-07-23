@@ -26,9 +26,12 @@ http {
             proxy_pass http://backend:4000;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
-            
-            # Only allow requests from your frontend domain
-            if ($http_origin !~ '^https?://${SERVER_NAME}$') {
+
+            access_log /var/log/nginx/graphql_access.log;
+            error_log /var/log/nginx/graphql_error.log;
+
+            # Allow requests from both leonidsmaslovs.com and www.leonidsmaslovs.com
+            if ($http_origin !~ '^https?://(www\.)?${SERVER_NAME}$') {
                 return 403;
             }
         }
