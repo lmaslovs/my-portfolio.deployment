@@ -15,8 +15,8 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "8081:80" # Internal port mapped to external port 8081
-      - "444:443" # Internal port mapped to external port 444 for SSL
+      - "81:80" # Internal port mapped to 81 for HTTP
+      - "444:443" # Internal port mapped to 444 for HTTPS
     environment:
       - SERVER_NAME=${SERVER_NAME}
     command: /bin/bash -c "envsubst '$$SERVER_NAME' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"

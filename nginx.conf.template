@@ -30,7 +30,6 @@ http {
             access_log /var/log/nginx/graphql_access.log;
             error_log /var/log/nginx/graphql_error.log;
 
-            # Allow requests from both leonidsmaslovs.com and www.leonidsmaslovs.com
             if ($http_origin !~ '^https?://(www\.)?${SERVER_NAME}$') {
                 return 403;
             }
