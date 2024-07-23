@@ -12,7 +12,7 @@ services:
     networks:
       - web
 
-  leonidsmaslovs_nginx:
+  nginx:
     image: nginx:latest
     expose:
       - "80"
