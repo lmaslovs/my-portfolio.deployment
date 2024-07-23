@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  frontend:
+    image: lmaslovs/myportfolio.frontend:latest
+    networks:
+      - my-network
+
+  backend:
+    image: lmaslovs/myportfolio.backend:latest
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+    networks:
+      - my-network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
+    command: /bin/bash -c "envsubst '$$SERVER_NAME' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
