@@ -3,20 +3,20 @@ services:
   frontend:
     image: lmaslovs/myportfolio.frontend:latest
     networks:
-      - my-network
+      - web
 
   backend:
     image: lmaslovs/myportfolio.backend:latest
     environment:
       MONGODB_URI: ${MONGODB_URI}
     networks:
-      - my-network
+      - web
 
   nginx:
     image: nginx:latest
-    ports:
-      - "80:80" # Internal port mapped to 81 for HTTP
-      - "443:443" # Internal port mapped to 444 for HTTPS
+    expose:
+      - "80"
+      - "443"
     environment:
       - SERVER_NAME=${SERVER_NAME}
     command: /bin/bash -c "envsubst '$$SERVER_NAME' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
@@ -27,8 +27,8 @@ services:
       - frontend
       - backend
     networks:
-      - my-network
+      - web
 
 networks:
-  my-network:
-    driver: bridge
+  web:
+    external: true
